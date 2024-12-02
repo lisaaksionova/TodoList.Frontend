@@ -1,0 +1,18 @@
+.createtask-card{
+  display: flex;
+  width: 180px; 
+  height: 200px; 
+  background-color: #f5f0e1;
+  border-radius: 8px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.78;
+}
+.createtask-card:hover{
+  opacity: 1;
+}
+.createtask-card > p {
+  color: #1e3d59;
+  font-size: 60px;
+}

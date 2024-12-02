@@ -1,0 +1,24 @@
+.taskline{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start; 
+  align-items: flex-start;   
+  gap: 45px;
+  padding: 0 20px 20px;
+  flex-wrap: nowrap; 
+  overflow: hidden;  
+}
+
+.tasklist-container{
+  display: flex;
+  flex-direction: column;
+  height: 282.23px;
+  width: 100%;
+  overflow: hidden; 
+}
+
+
+.tasklist-name{
+  padding-left: 20px;
+  color: #f5f0e1;
+}
