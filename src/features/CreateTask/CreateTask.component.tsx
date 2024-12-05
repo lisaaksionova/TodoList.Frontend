@@ -1,17 +1,15 @@
-import React from 'react';
-import './CreateTask.styles.scss';
+import "./CreateTask.styles.scss";
+import { useStore } from "../../stores/store";
+import { observer } from "mobx-react-lite";
 
-type Props = {
-  onOpenModal: () => void;
-};
+const CreateTask = () => {
+  const { taskStore } = useStore();
 
-
-const CreateTask = ({ onOpenModal }: Props) => {
   return (
-    <div className="createtask-card" onClick={onOpenModal}>
+    <div className="createtask-card" onClick={taskStore.openModal}>
       <p>+</p>
     </div>
   );
 };
 
-export default CreateTask;
+export default observer(CreateTask);

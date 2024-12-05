@@ -4,13 +4,14 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure it appears on top */
+  z-index: 1000;
 }
-.modal-container{
+
+.modal-container {
   display: flex;
   flex-direction: column;
   background-color: #f5f0e1;
@@ -22,7 +23,8 @@
   border: 1.25px solid #1e3d59;
   position: relative;
 }
-.edit-section{
+
+.edit-section {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,24 +35,27 @@
   padding-top: 57px;
 }
 
-.edit-section > input{
-  width: 80%; 
-  padding: 10px; 
-  margin: 10px 17px; 
-  font-size: 16px; 
-  border: 1px solid #ccc; 
-  border-radius: 4px; 
-  outline: none; 
-  transition: border-color 0.3s, box-shadow 0.3s; 
+.edit-section>input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 17px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
-.edit-section > input:hover {
-  border-color: #1e3d59; 
-}
-.edit-section > input:focus {
+
+.edit-section>input:hover {
   border-color: #1e3d59;
-  box-shadow: 0 0 5px rgba(74, 132, 194, 0.235); 
 }
-.footer{
+
+.edit-section>input:focus {
+  border-color: #1e3d59;
+  box-shadow: 0 0 5px rgba(74, 132, 194, 0.235);
+}
+
+.footer {
   display: flex;
   justify-content: space-between;
   padding: 6px;
@@ -59,7 +64,7 @@
   margin: 10px;
 }
 
-.button{
+.button {
   width: 93px;
   height: 40px;
   background-color: #facd6b;
@@ -68,6 +73,7 @@
   color: #1e3d59;
   font-weight: bold;
 }
-.button:hover{
+
+.button:hover {
   background-color: #d3b26c;
 }

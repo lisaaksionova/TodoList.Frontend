@@ -1,17 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import './TaskModal.styles.scss';
-import { Task } from '../../models/Task';
+import React, { useEffect, useState } from "react";
+import "./TaskModal.styles.scss";
+import { useStore } from "../../stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  isOpen: boolean; 
-  onClose: () => void; 
-  onSave: (task: {id?: number, title: string; text: string }) => void; 
-  task: Task | null;
-}
+const TaskModal = () => {
+  const { taskStore } = useStore();
 
-const TaskModal = ({ isOpen, onClose, onSave, task }: Props) => {
-  const [title, setTitle] = useState(task?.title || ''); // Pre-fill for editing
-  const [text, setText] = useState(task?.text || '');
+  const task = taskStore.selectedTask;
+
+  const [title, setTitle] = useState(task?.title || "");
+  const [text, setText] = useState(task?.text || "");
+
+  const maxTitleLength = 50;
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const trimmedValue = e.target.value.trimStart();
+    if (trimmedValue.length <= maxTitleLength) {
+      setTitle(e.target.value);
+    }
+  };
+
+  const maxTextLength = 100;
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const trimmedValue = e.target.value.trimStart();
+    if (trimmedValue.length <= maxTextLength) {
+      setText(e.target.value);
+    }
+  };
 
   useEffect(() => {
     if (task) {
@@ -20,14 +36,14 @@ const TaskModal = ({ isOpen, onClose, onSave, task }: Props) => {
     }
   }, [task]);
 
-  if (!isOpen) return null;
+  if (!taskStore.isModalOpen) return null;
 
   const handleSave = () => {
     if (title.trim()) {
-      onSave({ id: task?.id, title, text });
-      setTitle('');
-      setText('');
-      onClose();
+      taskStore.saveTask({ id: task?.id, title, text });
+      setTitle("");
+      setText("");
+      taskStore.closeModal();
     } else {
       alert("Task title is required!");
     }
@@ -35,26 +51,32 @@ const TaskModal = ({ isOpen, onClose, onSave, task }: Props) => {
 
   return (
     <div className="modal-overlay">
-      <div className='modal-container'>
-        <form className='edit-section'>
-          <input 
-          type="text" 
-          placeholder='Input task title...'
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}/>
-          <input 
-          type="text" 
-          placeholder='Input task text...'
-          value={text}
-          onChange={(e) => setText(e.target.value)}/>
+      <div className="modal-container">
+        <form className="edit-section">
+          <input
+            type="text"
+            placeholder="Input task title..."
+            value={title}
+            onChange={handleTitleChange}
+          />
+          <input
+            type="text"
+            placeholder="Input task text..."
+            value={text}
+            onChange={handleTextChange}
+          />
         </form>
         <div className="footer">
-          <button className='button' onClick={onClose}>Close</button>
-          <button className='button' onClick={handleSave}>Save</button>
+          <button className="button" onClick={taskStore.closeModal}>
+            Close
+          </button>
+          <button className="button" onClick={handleSave}>
+            Save
+          </button>
         </div>
       </div>
-      </div>
-  )
-}
+    </div>
+  );
+};
 
-export default TaskModal;
+export default observer(TaskModal);
