@@ -1,6 +1,7 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { Task } from "../models/Task";
 import { TaskStatus } from "../models/TaskStatus";
+import agent from "../api/agent";
 
 export default class TaskStore {
   tasks: Task[] = [];
@@ -12,7 +13,17 @@ export default class TaskStore {
   }
 
   //loading from database (video 71)
-  loadTasks = () => {};
+  loadTasks = async () => {
+    try {
+      const tasks = await agent.Tasks.list();
+      runInAction(() => {
+        tasks.forEach((task) => this.tasks.push(task));
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(this.tasks);
+  };
 
   openModal = () => {
     console.log("open modal");
@@ -24,7 +35,6 @@ export default class TaskStore {
   };
 
   saveTask = (task: { id?: number; title: string; text: string }) => {
-    console.log("save task");
     if (task.id) {
       this.tasks = this.tasks.map((t) =>
         t.id === task.id ? { ...t, title: task.title, text: task.text } : t
