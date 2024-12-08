@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./TaskModal.styles.scss";
 import { useStore } from "../../stores/store";
 import { observer } from "mobx-react-lite";
+import { Task } from "../../models/Task";
+import { TaskStatus } from "../../models/TaskStatus";
+import { toJS } from "mobx";
 
 const TaskModal = () => {
   const { taskStore } = useStore();
 
-  const task = taskStore.selectedTask;
+  const selectedTask = taskStore.selectedTask;
 
-  const [title, setTitle] = useState(task?.title || "");
-  const [text, setText] = useState(task?.text || "");
+  const [title, setTitle] = useState(selectedTask?.title || "");
+  const [text, setText] = useState(selectedTask?.text || "");
 
   const maxTitleLength = 50;
 
@@ -30,17 +33,29 @@ const TaskModal = () => {
   };
 
   useEffect(() => {
-    if (task) {
-      setTitle(task.title);
-      setText(task.text);
+    if (selectedTask) {
+      setTitle(selectedTask.title);
+      setText(selectedTask.text);
     }
-  }, [task]);
+  }, [selectedTask]);
 
   if (!taskStore.isModalOpen) return null;
 
   const handleSave = () => {
+    console.log("modal title: ", title);
+    console.log("modal text: ", text);
+
+    const task: Task = selectedTask
+      ? {
+          id: selectedTask.id,
+          title: title,
+          text: text,
+          taskType: selectedTask.taskType,
+        }
+      : { id: 0, title: title, text: text, taskType: TaskStatus.Pending };
+    console.log("update task: ", toJS(task));
     if (title.trim()) {
-      taskStore.saveTask({ id: task?.id, title, text });
+      taskStore.saveTask(task);
       setTitle("");
       setText("");
       taskStore.closeModal();

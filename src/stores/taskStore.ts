@@ -40,19 +40,22 @@ export default class TaskStore {
     this.isModalOpen = false;
   };
 
-  saveTask = (task: { id?: number; title: string; text: string }) => {
+  saveTask = (task: Task) => {
     if (task.id) {
+      agent.Tasks.update(task);
       this.tasks = this.tasks.map((t) =>
         t.id === task.id ? { ...t, title: task.title, text: task.text } : t
       );
     } else {
       const newTask: Task = {
-        id: this.tasks.length + 1,
+        id: 0,
         title: task.title,
         text: task.text,
         taskType: TaskStatus.Pending, // Default status
       };
-      runInAction(() => this.tasks.push(newTask));
+      runInAction(() => {
+        agent.Tasks.create(newTask).then(() => this.tasks.push(newTask));
+      });
     }
 
     this.selectedTask = null;
@@ -63,6 +66,7 @@ export default class TaskStore {
     this.selectedTask = task;
   };
   deleteTask = (id: number) => {
+    agent.Tasks.delete(id);
     this.tasks = this.tasks.filter((task) => task.id !== id);
   };
   editTask = (task: Task) => {
