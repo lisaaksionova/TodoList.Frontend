@@ -31,7 +31,7 @@ const TaskLine = ({ taskLineName, tasks }: Props) => {
       <h3 className="tasklist-name">{taskLineName}</h3>
       <Flex justify="flex-start" className="taskline">
         {tasks.map((task) => (
-          <Task task={task} />
+          <Task key={task.id} task={task} />
         ))}
         {taskLineName === "Pending" && <CreateTask />}
       </Flex>

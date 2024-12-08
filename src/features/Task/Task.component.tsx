@@ -44,7 +44,7 @@ const Task = ({ task }: Props) => {
           }
         }}
       >
-        <p className="task-text">{task.status} </p>
+        <p className="task-text">{task.text} </p>
         <div className="buttons">
           <Button
             data-no-drag

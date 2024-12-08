@@ -23,6 +23,7 @@ const Tasks = {
 
 const agent = {
   Tasks,
+  responseBody,
 };
 
 export default agent;

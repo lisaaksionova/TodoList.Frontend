@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import { Task } from "../models/Task";
 import { TaskStatus } from "../models/TaskStatus";
 import agent from "../api/agent";
@@ -16,13 +16,19 @@ export default class TaskStore {
   loadTasks = async () => {
     try {
       const tasks = await agent.Tasks.list();
+      console.log("Fetched tasks:", tasks);
       runInAction(() => {
-        tasks.forEach((task) => this.tasks.push(task));
+        tasks.forEach((task) => {
+          // Check for duplicates
+          if (!this.tasks.find((t) => t.id === task.id)) {
+            this.tasks.push(task);
+          }
+        });
+        console.log("Tasks in store after loading:", toJS(this.tasks));
       });
     } catch (error) {
       console.log(error);
     }
-    console.log(this.tasks);
   };
 
   openModal = () => {
@@ -44,9 +50,9 @@ export default class TaskStore {
         id: this.tasks.length + 1,
         title: task.title,
         text: task.text,
-        status: TaskStatus.Pending, // Default status
+        taskType: TaskStatus.Pending, // Default status
       };
-      this.tasks.push(newTask);
+      runInAction(() => this.tasks.push(newTask));
     }
 
     this.selectedTask = null;
