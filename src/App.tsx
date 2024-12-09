@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "./stores/store";
 import { useEffect } from "react";
 import { toJS } from "mobx";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 function App() {
   const { taskStore } = useStore();
@@ -29,19 +30,17 @@ function App() {
     const taskId = active.id as number;
     const newStatus = over.id as Task["taskType"];
 
-    taskStore.tasks = taskStore.tasks.map((task) =>
-      task.id === taskId
-        ? {
-            ...task,
-            taskType: newStatus,
-          }
-        : task
-    );
+    const task = taskStore.tasks.find((t) => t.id === taskId);
+    if (task) {
+      task.taskType = newStatus as Task["taskType"];
+      taskStore.saveTask(task);
+    }
+    console.log(taskStore.tasks);
   }
 
   return (
     <Flex className="App" vertical={true} justify="space-between">
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext modifiers={[restrictToWindowEdges]} onDragEnd={handleDragEnd}>
         <TaskLine
           taskLineName="Pending"
           tasks={taskStore.tasks.filter((task) => task.taskType === "Pending")}
