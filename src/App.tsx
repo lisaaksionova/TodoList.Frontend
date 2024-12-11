@@ -32,7 +32,7 @@ function App() {
 
     const task = taskStore.tasks.find((t) => t.id === taskId);
     if (task) {
-      task.taskType = newStatus as Task["taskType"];
+      task.taskType = newStatus.replace(/\s/g, "") as Task["taskType"];
       taskStore.saveTask(task);
     }
     console.log(taskStore.tasks);

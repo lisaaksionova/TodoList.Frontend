@@ -1,7 +1,8 @@
 import "./Task.styles.scss";
 import { Task as TaskType } from "../../models/Task";
 import { useDraggable } from "@dnd-kit/core";
-import Card from "antd/es/card/Card";
+// import Card from "antd/es/card/Card";
+import { Card } from "antd";
 import { Button } from "antd";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../stores/store";
